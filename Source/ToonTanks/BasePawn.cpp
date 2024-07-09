@@ -3,6 +3,7 @@
 
 #include "BasePawn.h"
 
+#include "Projectile.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -11,7 +12,7 @@ ABasePawn::ABasePawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capoule Collider"));
+	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Collider"));
 	RootComponent = CapsuleComp;
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
@@ -39,13 +40,18 @@ void ABasePawn::Fire()
 {
 	const FVector Point = ProjectileSpawnPoint->GetComponentLocation();
 	
-	DrawDebugSphere(
-		GetWorld(),
-		Point,
-		20.f,
-		12,
-		FColor::Red,
-		false,
-		3.f
-	);
+	// DrawDebugSphere(
+	// 	GetWorld(),
+	// 	Point,
+	// 	20.f,
+	// 	12,
+	// 	FColor::Red,
+	// 	false,
+	// 	3.f
+	// );
+
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileClass,
+		ProjectileSpawnPoint->GetComponentLocation(),
+		ProjectileSpawnPoint->GetComponentRotation());
 }
