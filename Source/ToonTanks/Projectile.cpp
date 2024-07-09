@@ -3,7 +3,7 @@
 
 #include "Projectile.h"
 
-#include "Components/CapsuleComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -13,19 +13,21 @@ AProjectile::AProjectile()
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
 	RootComponent = BaseMesh;
+
+	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Movement Component"));
+	MovementComponent->InitialSpeed = 1300.f;
+	MovementComponent->InitialSpeed = 2000.f;
 }
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
