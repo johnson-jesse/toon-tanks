@@ -3,12 +3,16 @@
 
 #include "HealthComponent.h"
 
+#include "ToonTanksGameMode.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+	ToonTanksGameMode = nullptr;
 }
 
 // Called when the game starts
@@ -17,6 +21,7 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 	Health = MaxHealth;
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::DamageTaken);
+	ToonTanksGameMode = Cast<AToonTanksGameMode>(UGameplayStatics::GetGameMode(this));
 }
 
 // Called every frame
@@ -35,7 +40,9 @@ void UHealthComponent::DamageTaken(
 	if (Damage <= 0.f) return;
 	Health -= Damage;
 	
-	UE_LOG(LogTemp, Warning, TEXT("DamagedActor %s"), *DamagedActor->GetName());
-	UE_LOG(LogTemp, Warning, TEXT("DamageCauser %s"), *DamageCauser->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("DamagedActor %s"), *DamagedActor->GetName())
 	UE_LOG(LogTemp, Warning, TEXT("Health %f"), Health);
+
+	if (Health <= 0.f && ToonTanksGameMode) ToonTanksGameMode->ActorDied(DamagedActor);
+	UE_LOG(LogTemp, Warning, TEXT("Instigator %s %f"), *Instigator->GetName(), Health);
 }

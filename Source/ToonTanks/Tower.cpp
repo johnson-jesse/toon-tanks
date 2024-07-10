@@ -12,6 +12,13 @@ void ATower::Tick(const float DeltaTime)
 	if (InFireRange()) RotateTurret(Tank->GetActorLocation());
 }
 
+void ATower::HandleDestruction()
+{
+	Super::HandleDestruction();
+	UE_LOG(LogTemp, Warning, TEXT("Tower Destroyed"));
+	Destroy();
+}
+
 void ATower::BeginPlay()
 {
 	Super::BeginPlay();

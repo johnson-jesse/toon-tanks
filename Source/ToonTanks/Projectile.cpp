@@ -48,13 +48,14 @@ void AProjectile::OnHit(
 
 	if (OtherActor && OtherActor != this && OtherActor != MyOwner)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("OnHit %f"), Damage);
 		UGameplayStatics::ApplyDamage(
 			OtherActor,
 			Damage,
 			MyOwnerInstigator,
 			this,
 			DamageTypeClass);
-	}
 
-	Destroy();
+		Destroy();
+	}
 }
